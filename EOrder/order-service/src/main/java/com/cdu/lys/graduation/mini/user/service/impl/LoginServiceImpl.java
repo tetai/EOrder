@@ -74,7 +74,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Value(("${order.wx.AppSecret}"))
     public void setAppSecret(String appSecret){
-        this.appSecret = BASE64Utils.parseBase64(appSecret);
+        this.appSecret = appSecret;
     }
 
     @Override

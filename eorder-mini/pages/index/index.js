@@ -8,7 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    staticUrl: "http://localhost:8080/eorder/static",
+    showGuide: false, // 是否显示引导提示
+    staticUrl: "https://flymepay-sp-test.meizu.com/eorder/static",
     leftMenuList: null,
     //左侧菜单的当前索引
     currentIdx: -2,
@@ -935,12 +936,55 @@ Page({
       serverPrefix:app.globalData.serverPrefix
     })
   },
-  
+  // 检查用户是否已经授权
+  checkSubscription: function () {
+    const templateId = 'bn5wi-EzNZPJSL5_NjhwVnM9dcXuuIggWyCLyBu_VsY'; // 替换为你的模板ID
+    wx.getSetting({
+      withSubscriptions: true,
+      success: (res) => {
+        const setting = res.subscriptionsSetting;
+        console.log("用户授权状态：", setting);
+        if (setting.itemSettings && setting.itemSettings[templateId] === 'accept') {
+          // 用户已授权
+          this.setData({ showGuide: false });
+        } else {
+          // 用户未授权，显示引导提示
+          this.setData({ showGuide: true });
+        }
+      },
+    });
+  },
+
+  // 触发订阅消息授权
+  subscribeMessage: function () {
+    wx.requestSubscribeMessage({
+      tmplIds: ['bn5wi-EzNZPJSL5_NjhwVnM9dcXuuIggWyCLyBu_VsY'], // 替换为你的模板ID
+      success: (res) => {
+        if (res['bn5wi-EzNZPJSL5_NjhwVnM9dcXuuIggWyCLyBu_VsY'] === 'accept') {
+          this.setData({ showGuide: false });
+          wx.showToast({ title: '授权成功', icon: 'success' });
+        } else {
+          wx.showToast({ title: '授权失败', icon: 'none' });
+        }
+      },
+      fail: (err) => {
+        console.error('用户授权失败', err);
+        wx.showToast({ title: '授权失败', icon: 'none' });
+      },
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    const launchOptions = wx.getLaunchOptionsSync();
+    const query = launchOptions.query; // 获取启动时的参数
+    const tableId = query.tableId;
+    console.log('启动参数--------- tableId:', tableId); 
+    // if (!tableId) {
+    //   return;
+    // }
+    this.checkSubscription();
     //全部商品
     var param = {
       pageNo: this.data.pageNo,

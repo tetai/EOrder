@@ -1,5 +1,6 @@
 package com.cdu.lys.graduation.mini.user.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.cdu.lys.graduation.commons.result.PageResult;
 import com.cdu.lys.graduation.commons.utils.DateUtils;
 import com.cdu.lys.graduation.mini.coupon.service.CouponService;
@@ -19,6 +20,7 @@ import com.cdu.lys.graduation.types.exception.ErrorType;
 import com.cdu.lys.graduation.mini.user.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO selectUserByOpenId(String openId) {
         UserDO userDO = userDOMapperExt.selectByOpenId(openId);
         UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(userDO, userDTO);
+        BeanUtil.copyProperties(userDO, userDTO);
 
         return userDTO;
     }

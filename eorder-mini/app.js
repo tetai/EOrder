@@ -9,10 +9,10 @@ App({
   },
   globalData: {
     userInfo: null,
-    rootUrl:"http://localhost:8080/eorder/app",
-    fileUrl:"http://localhost:8080/eorder/file",
-    staticUrl:"http://localhost:8080/eorder/static",
-    serverPrefix:"http://localhost:8080",
+    rootUrl:"https://flymepay-sp-test.meizu.com/eorder/app",
+    fileUrl:"https://flymepay-sp-test.meizu.com/eorder/file",
+    staticUrl:"https://flymepay-sp-test.meizu.com/eorder/static",
+    serverPrefix:"https://flymepay-sp-test.meizu.com",
     token:''
   },
 

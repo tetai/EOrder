@@ -1,0 +1,66 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<configuration>
+
+<!--    <springProperty scope="context" name="log.filePath" source="log.path" />-->
+
+    <!--控制台日志打印方式-->
+    <appender name = "STDOUT" class = "ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd' 'HH:mm:ss.SSS}] [%p] [%C] [%L] [uid:%X{uid},logId:%X{logId}] [%t]  -%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <property name="LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss} | %highlight(%-5level) | %boldYellow(%tid) | %boldYellow(%thread) | %boldGreen(%logger) [%L] | %msg%n"/>
+
+
+    <appender name="SERVER" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+        <file>/data/log/eorder-server.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd' 'HH:mm:ss.SSS}] [%p] [%C] [%L] [uid:%X{uid},imei:%X{imei},logId:%X{logId}] [%t]  -%m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/data/log/eorder-server.log.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- 保留 30天数据，默认无限-->
+            <MaxHistory>60</MaxHistory>
+        </rollingPolicy>
+
+    </appender>
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+        <file>/data/log/eorder-error.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd' 'HH:mm:ss.SSS}] [%p] [%C] [%L] [uid:%X{uid},imei:%X{imei},logId:%X{logId}] [%t]  -%m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/data/log/eorder-error.log.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- 保留 30天数据，默认无限-->
+            <MaxHistory>60</MaxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <logger name="org.apache.zookeeper.ClientCnxn" level="WARN" />
+    <logger name="org.springframework" level="WARN" />
+    <logger name="java.sql" level="WARN" />
+    <logger name="com.meizu.framework" level="WARN" />
+    <logger name="com.meizu.bs" level="WARN" />
+    <logger name="org.apache.commons" level="WARN" />
+    <logger name="org.apache.http" level="WARN" />
+    <logger name="org.hibernate" level="WARN" />
+    <logger name="com.baidu.brpc" level="WARN" />
+    <logger name="com.xxl.job.core" level="WARN" />
+
+    <root level = "INFO">
+        <appender-ref ref = "STDOUT"/>
+        <appender-ref ref = "SERVER"/>
+        <appender-ref ref = "ERROR"/>
+    </root>
+</configuration>

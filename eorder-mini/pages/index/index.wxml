@@ -38,6 +38,7 @@
                 <view class="title {{index===currentTitleIdx?'title_selected':''}}" wx:for="{{titles}}" wx:key="*this" bindtap="handleTitleTap" data-index="{{index}}">
                     <text>{{item}}</text>
                 </view>
+                <!-- <button bindtap="subscribeMessage">订阅消息</button> -->
             </view>
 
             <!-- 右 -->
@@ -45,7 +46,6 @@
                 <searchInput searchUrl="/pages/sub_index_page/search/search"></searchInput>
             </view>
         </view>
-
         <view class="cates_container">
             <swiper class="cates_swiper" current="{{currentTitleIdx}}" bindchange="handleSwiperChange">
                 <!-- 菜单 -->
@@ -304,12 +304,19 @@
                     </view>
                 </view>
             </view>
-            
+           
         </scroll-view>
     </view>
 </view>
 
-
+<view wx:if="{{showGuide}}">
+  <view class="mask">
+    <view class="guide-box">
+      <view class="tip">为了及时接收订单通知，请点击下方按钮授权</view>
+      <button bindtap="subscribeMessage">授权接收通知</button>
+    </view>
+  </view>
+</view>
 <!-- 购物车条 -->
 <view class="cart_bar" wx:if="{{ GoodsCartInfoShowState||(cartList.length >0 && cartShowState)}}">
     <view class="cart float-left">

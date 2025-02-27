@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 数据格式转换类
@@ -34,6 +35,9 @@ public class OrderDataConverter {
         data.forEach(orderFormDO -> {
             OrderFormVO orderFormVO = this.convertOrderFormDO2VO(orderFormDO);
             UserDO userDO = adminUserBO.getById(orderFormDO.getUserId());
+            if (Objects.isNull(userDO)) {
+                return;
+            }
             orderFormVO.setUsername(userDO.getUsername());
             orderFormVOS.add(orderFormVO);
         });
